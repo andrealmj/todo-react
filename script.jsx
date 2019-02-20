@@ -6,8 +6,9 @@ class List extends React.Component {
   }
 
   state = {
-    list : [],
-    word : ""
+    list: [],
+    word: "",
+    error: ""
   }
 
   changeHandler(e){
@@ -16,8 +17,16 @@ class List extends React.Component {
   }
 
   clickHandler(e) {
-    this.state.list.push(this.state.word);
-    this.setState({word: ""});
+
+    if (this.state.word.length > 1 && this.state.word.length < 20) {
+      this.state.list.push(this.state.word);
+      this.setState({word: ""});
+    } else if (this.state.word.length <= 1) {
+      this.setState({error: "Please input more than 1 character"});
+    } else {
+      this.setState({error: "Please input less than 20 characters"});
+    }
+    
   }
 
   render() {
@@ -29,10 +38,15 @@ class List extends React.Component {
 
       console.log("rendering");
       return (
-        <div className="list">
-          <input onChange={this.changeHandler} value={this.state.word}/>
-          <button onClick={this.clickHandler}>add item</button><br />
-          {displayList}
+        <div>
+
+          <div className="list">
+            <input onChange={this.changeHandler} value={this.state.word} />
+            <p className="error">{this.state.error}</p>
+            <button onClick={this.clickHandler}>add item</button><br />
+            {displayList}
+          </div>
+
         </div>
       );
   }
